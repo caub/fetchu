@@ -1,0 +1,32 @@
+{
+	"name": "fetcho",
+	"version": "1.0.0",
+	"description": "JSON fetch wrapper",
+	"main": "fetcho.js",
+	"scripts": {
+		"test": "node test",
+		"prepare": "rollup -c"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/caub/fetcho.git"
+	},
+	"keywords": [
+		"fetch",
+		"JSON",
+		"promise"
+	],
+	"author": "caub",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/caub/fetcho/issues"
+	},
+	"homepage": "https://github.com/caub/fetcho#readme",
+	"browser": {
+		"./fetch": "./fetch-browser.js"
+	},
+	"devDependencies": {
+		"rollup": "^0.52.0",
+		"rollup-plugin-node-resolve": "^3.0.0"
+	}
+}
