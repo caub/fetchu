@@ -1,13 +1,13 @@
-import fetch from './fetch';
+const fetch = typeof window !== 'undefined' && window.fetch || require('fetch-cookie')(require('node-fetch'));
 
-export const fetchHeaders = (url, {method = 'GET', body} = {}) => fetch(url, {
+const fetchHeaders = (url, {method = 'GET', body} = {}) => fetch(url, {
 	method,
 	body: body && JSON.stringify(body),
 	credentials: 'include',
 	headers: {'Content-Type': 'application/json', Accept: '*/json'}
 });
 
-export const toJson = r => (
+const toJson = r => (
 	/^application\/json/.test(r.headers.get('Content-Type')) ? r.json() : r.text()
 )
 	.then(body => (
@@ -19,6 +19,11 @@ export const toJson = r => (
  * @param {*} url
  * @param {*} opts: {method, body} optional
  */
-export const fetchJson = (url, opts) => fetchHeaders(url, opts).then(toJson);
+const fetchJson = (url, opts) => fetchHeaders(url, opts).then(toJson);
 
-export default fetchJson;
+module.exports = fetchJson;
+module.exports.fetchHeaders = fetchHeaders;
+module.exports.toJson = toJson;
+module.exports['default'] = fetchJson;
+
+Object.defineProperty(module.exports, '__esModule', { value: true });
