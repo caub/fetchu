@@ -1,6 +1,6 @@
 {
 	"name": "fetcho",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "JSON fetch wrapper",
 	"main": "index.js",
 	"files": [

@@ -24,6 +24,3 @@ const fetchJson = (url, opts) => fetchHeaders(url, opts).then(toJson);
 module.exports = fetchJson;
 module.exports.fetchHeaders = fetchHeaders;
 module.exports.toJson = toJson;
-module.exports['default'] = fetchJson;
-
-Object.defineProperty(module.exports, '__esModule', { value: true });
