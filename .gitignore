@@ -1,2 +1,3 @@
 node_modules
 fetcho.js
+.nyc_output

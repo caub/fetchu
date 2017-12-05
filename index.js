@@ -1,4 +1,4 @@
-const fetch = typeof window !== 'undefined' && window.fetch || require('fetch-cookie')(require('node-fetch'));
+const fetch = typeof window !== 'undefined' && window.fetch || require('fetch-cookie/node-fetch')(require('node-fetch'));
 
 const fetchHeaders = (url, {method = 'GET', body} = {}) => fetch(url, {
 	method,
