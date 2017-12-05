@@ -2,7 +2,7 @@ const fetch = typeof window !== 'undefined' && window.fetch || require('fetch-co
 
 const fetchHeaders = (url, {method = 'GET', body} = {}) => fetch(url, {
 	method,
-	body: body && JSON.stringify(body),
+	body: typeof body === 'object' ? JSON.stringify(body) : body,
 	credentials: 'include',
 	headers: {'Content-Type': 'application/json', Accept: '*/json'}
 });

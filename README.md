@@ -8,7 +8,11 @@
 ```js
 import fetcho from 'fetcho';
 // or const fetcho = require('fetcho');
+
 fetcho('https://httpbin.org/get?test=foo')
+	.then(console.log)
+
+fetcho('https://httpbin.org/post', {method: 'POST', body: {test: 'foo'}})
 	.then(console.log)
 ```
 
