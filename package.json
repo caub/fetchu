@@ -1,13 +1,14 @@
 {
 	"name": "fetcho",
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"description": "JSON fetch wrapper",
-	"main": "index.js",
-	"files": [
-		"index.js"
-	],
+	"main": "fetcho.js",
+	"module": "fetcho.es.js",
+	"directories": {
+		"test": "test"
+	},
 	"scripts": {
-		"test": "nyc node test",
+		"test": "rollup -c && nyc node test",
 		"coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
 	},
 	"repository": {
@@ -30,6 +31,7 @@
 		"fetch-cookie": "^0.7.0",
 		"nock": "^9.1.3",
 		"node-fetch": "^1.7.3",
-		"nyc": "^11.3.0"
+		"nyc": "^11.3.0",
+		"rollup": "^0.52.1"
 	}
 }

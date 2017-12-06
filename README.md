@@ -4,6 +4,7 @@
 [![build status][travis-image]][travis-url]
 [![coverage status][codecov-image]][codecov-url]
 
+Usage: like fetch, except it prefills 
 
 ```js
 import fetcho from 'fetcho';
