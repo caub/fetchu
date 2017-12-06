@@ -4,7 +4,7 @@
 [![build status][travis-image]][travis-url]
 [![coverage status][codecov-image]][codecov-url]
 
-Usage: like fetch, except it prefills 
+Usage: like fetch, it prefills `headers` opts for convenience, and `body` is automatically JSON.stringified
 
 ```js
 import fetcho from 'fetcho';
