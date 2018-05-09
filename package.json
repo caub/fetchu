@@ -1,6 +1,6 @@
 {
 	"name": "fetcho",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "JSON fetch wrapper",
 	"main": "fetcho.cjs.js",
 	"module": "fetcho.es.js",
