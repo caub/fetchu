@@ -1,4 +1,4 @@
-const fetchHeaders = (url, {body, headers, ...opts} = {}) => fetch(url, {
+export const fetchHeaders = (url, {body, headers, ...opts} = {}) => fetch(url, {
 	headers: {
 		Accept: 'application/json',
 		...(body ? {'Content-Type': 'application/json'} : undefined),
@@ -9,14 +9,14 @@ const fetchHeaders = (url, {body, headers, ...opts} = {}) => fetch(url, {
 });
 
 
-class FetchError extends Error {
+export class FetchError extends Error {
 	constructor(body) {
 		const message = typeof body === 'string' ? body : body.message || 'API error';
 		super(message);
 	}
 }
 
-const toJson = r => (
+export const toJson = r => (
 	/^application\/json/.test(r.headers.get('Content-Type')) ? r.json() : r.text()
 ).then(body => r.ok ? body : Promise.reject(new FetchError(body)));
 
@@ -25,7 +25,4 @@ const toJson = r => (
  * @param {*} url
  * @param {*} fetchOpts: optional
  */
-var index = (url, opts) => fetchHeaders(url, opts).then(toJson);
-
-export default index;
-export { fetchHeaders, FetchError, toJson };
+export default (url, opts) => fetchHeaders(url, opts).then(toJson);

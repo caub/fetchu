@@ -1,6 +1,6 @@
 const nock = require('nock');
 const assert = require('assert');
-const fetcho = require('..');
+const fetcho = require('..').default;
 
 nock('http://o.xo')
 	.persist()

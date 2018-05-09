@@ -1,0 +1,18 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "modules": false,
+        "shippedProposals": true,
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "not ie > 0"
+          ],
+          "node": "8.11"
+        }
+      }
+    ]
+  ]
+}
