@@ -1,6 +1,1 @@
-test
-.travis.yml
-.babelrc
-.nyc_output
-rollup.config.js
-!fetcho.*.js
+.*

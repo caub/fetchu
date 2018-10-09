@@ -1,37 +1,23 @@
 {
-	"name": "fetcho",
-	"version": "1.2.3",
-	"description": "JSON fetch wrapper",
-	"main": "fetcho.cjs.js",
-	"module": "fetcho.mjs",
-	"browser": "fetcho.umd.js",
+	"name": "fetchu",
+	"version": "1.0.0",
+	"description": "nodejs http-client",
+	"main": "index.mjs",
 	"scripts": {
-		"build": "rollup -c",
-		"test": "npm run build && nyc node test/index.spec",
-		"prepare": "npm run build",
-		"coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
+		"test": "node --experimental-modules --no-warnings test"
 	},
-	"repository": "https://github.com/caub/fetcho.git",
+	"repository": "https://github.com/caub/fetchu.git",
 	"keywords": [
 		"fetch",
-		"JSON",
+		"node",
+		"http",
 		"promise"
 	],
 	"author": "caub",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/caub/fetcho/issues"
+		"url": "https://github.com/caub/fetchu/issues"
 	},
-	"homepage": "https://github.com/caub/fetcho#readme",
-	"devDependencies": {
-		"@babel/core": "^7.0.0-beta.47",
-		"@babel/preset-env": "^7.0.0-beta.47",
-		"codecov": "^3.0.0",
-		"fetch-cookie": "^0.7.0",
-		"nock": "^9.2.6",
-		"node-fetch": "^2.1.2",
-		"nyc": "^11.8.0",
-		"rollup": "^0.59.1",
-		"rollup-plugin-babel": "^4.0.0-beta.4"
-	}
+	"homepage": "https://github.com/caub/fetchu#readme",
+	"dependencies": {}
 }

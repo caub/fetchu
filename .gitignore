@@ -1,3 +1,4 @@
 node_modules
-fetcho.*
+package-lock.json
+fetchu.*
 .nyc_output
