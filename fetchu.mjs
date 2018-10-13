@@ -17,7 +17,7 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		try {
 			return resolve(JSON.parse(text));
 		} catch {
-			resolve(text);
+			resolve(text + '');
 		}
 	});
 	if (body && typeof body.pipe === 'function') return body.pipe(req);

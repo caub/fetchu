@@ -3,14 +3,21 @@
 [![npm version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 
+- fetchu.mjs: for NodeJS
+- fetchu.js: for both node and browser, it relies on a global fetch
+
 ```js
-await fetchu('http://google.com')
+import fetchu from 'https://unpkg.com/fetchu';
 
-await fetchu('https://httpbin.org/get?test=foo')
+await fetchu('http://google.com') // <!doctype html><html ...
+await fetchu('https://httpbin.org/get?test=foo') // { args: { test: 'foo' }, ...
+await fetchu('https://httpbin.org/post', {method: 'POST', body: {test: 'foo'}}) // { args: {}, ..
+```
 
-await fetchu('https://httpbin.org/post', {method: 'POST', body: {test: 'foo'}})
-
-await fetchu({ path: '/v1.37/containers/json', socketPath: '/var/run/docker.sock' })
+NodeJS specificities:
+```js
+import fetchu from 'fetchu';
+await fetchu({ path: '/v1.37/containers/json', socketPath: '/var/run/docker.sock' }) // [ { Id: 'aa6...
 ```
 
 [npm-image]: https://img.shields.io/npm/v/fetchu.svg?style=flat-square

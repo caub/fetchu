@@ -1,8 +1,9 @@
 {
 	"name": "fetchu",
-	"version": "1.0.0",
+	"version": "1.0.3",
 	"description": "nodejs http-client",
-	"main": "index.mjs",
+	"main": "fetchu.mjs",
+	"browser": "fetchu.js",
 	"scripts": {
 		"test": "node --experimental-modules --no-warnings test"
 	},
