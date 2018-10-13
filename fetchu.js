@@ -4,9 +4,9 @@ export default (url, o = {}) => {
     o.body = JSON.stringify(o.body);
   }
   return fetch(url, o).then(r =>
-    r.json().catch(() => r.text()).then(body => {
-      if (r.ok) return body;
-      throw new Error(typeof body === 'string' ? body : body.message || 'API error');
+    (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text()).then(content => {
+      if (r.ok) return content;
+      throw new Error(typeof content === 'string' ? content : content.message || 'API error');
     })
   )
 }

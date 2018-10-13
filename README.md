@@ -1,4 +1,4 @@
-# fetchu: nodejs http-client
+# fetchu: universal http-client
 
 [![npm version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
@@ -9,12 +9,12 @@
 ```js
 import fetchu from 'https://unpkg.com/fetchu';
 
-await fetchu('http://google.com') // <!doctype html><html ...
+await fetchu('https://cors-anywhere.herokuapp.com/http://example.com') // <!doctype html><html ...
 await fetchu('https://httpbin.org/get?test=foo') // { args: { test: 'foo' }, ...
 await fetchu('https://httpbin.org/post', {method: 'POST', body: {test: 'foo'}}) // { args: {}, ..
 ```
 
-NodeJS specificities:
+NodeJS specificities (coming from http/https builtins):
 ```js
 import fetchu from 'fetchu';
 await fetchu({ path: '/v1.37/containers/json', socketPath: '/var/run/docker.sock' }) // [ { Id: 'aa6...
