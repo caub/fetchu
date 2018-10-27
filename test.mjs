@@ -1,4 +1,6 @@
 import { deepEqual as eq } from 'assert';
+import fs from 'fs';
+import cp from 'child_process';
 import fetchu from './fetchu.mjs';
 import puppeteer from 'puppeteer';
 
@@ -10,7 +12,8 @@ import puppeteer from 'puppeteer';
 		eq(JSON.parse(r.data), { ok: 3 });
 
 		// test fetchu.js on browser
-		browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+		const opts = !process.env.CI && fs.existsSync('/usr/bin/google-chrome') ? { executablePath: 'google-chrome' } : {};
+		browser = await puppeteer.launch({ ...opts, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] });
 		page = await browser.newPage();
 		page.on('console', msg => console.log(msg.text()));
 		page.on('error', err => console.error('error', err));

@@ -14,11 +14,7 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		const bufs = [];
 		for await (const buf of res) bufs.push(buf);
 		const text = Buffer.concat(bufs);
-		try {
-			return resolve(JSON.parse(text));
-		} catch {
-			resolve(text + '');
-		}
+		resolve(/^application\/json/.test(res.headers['content-type']) ? JSON.parse(text) : text + '');
 	});
 	if (body && typeof body.pipe === 'function') return body.pipe(req);
 	if (body) {
