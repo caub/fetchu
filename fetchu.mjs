@@ -16,7 +16,7 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		const text = Buffer.concat(bufs);
 		const data = /^application\/json/.test(res.headers['content-type']) ? JSON.parse(text) : text + '';
 		if (res.statusCode < 300) return resolve(data);
-		reject(new Error(typeof data === 'string' ? data : data.message || data || 'API error'));
+		reject(new Error(data && data.message || data || 'API error')); // data?.message || 'API error' with optional chaining
 	});
 	if (body && typeof body.pipe === 'function') return body.pipe(req);
 	if (body) {

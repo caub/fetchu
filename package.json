@@ -1,6 +1,6 @@
 {
 	"name": "fetchu",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "nodejs http-client",
 	"main": "fetchu.mjs",
 	"browser": "fetchu.js",
