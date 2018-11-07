@@ -1,8 +1,7 @@
-import { deepEqual as eq } from 'assert';
-import fs from 'fs';
-import cp from 'child_process';
-import fetchu from './fetchu.mjs';
-import puppeteer from 'puppeteer';
+const { deepEqual: eq } = require('assert');
+const fs = require('fs');
+const fetchu = require('./fetchu-node.js');
+const puppeteer = require('puppeteer');
 
 (async () => {
 	let browser, page;

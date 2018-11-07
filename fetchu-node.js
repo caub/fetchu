@@ -1,5 +1,5 @@
-import http from 'http';
-import https from 'https';
+const http = require('http');
+const https = require('https');
 
 const fetchu = (url, o) => new Promise((resolve, reject) => {
 	let body = o && o.body;
@@ -25,4 +25,4 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 	req.end();
 });
 
-export default fetchu;
+module.exports = fetchu;
