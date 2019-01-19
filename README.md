@@ -3,15 +3,15 @@
 [![npm version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 
-- fetchu.mjs: for NodeJS
-- fetchu.js: for both node and browser, it relies on a global fetch
+- fetchu-node.js: for NodeJS
+- fetchu-browser.js: it relies on a global fetch, so it works on browsers
 
 ```js
 import fetchu from 'https://unpkg.com/fetchu';
 
-await fetchu('https://cors-anywhere.herokuapp.com/http://example.com') // <!doctype html><html ...
-await fetchu('https://httpbin.org/get?test=foo') // { args: { test: 'foo' }, ...
-await fetchu('https://httpbin.org/post', {method: 'POST', body: {test: 'foo'}}) // { args: {},..
+await fetchu('https://cors-anywhere.herokuapp.com/http://example.com').then(r => r.text()) // <!doctype html><html ...
+await fetchu('https://httpbin.org/get?test=foo').then(r => r.json()) // { args: { test: 'foo' }, ...
+await fetchu('https://httpbin.org/post', {method: 'POST', body: {test: 'foo'}}).then(r => r.json()) // { args: {},..
 
 // abort:
 const ac = new AbortController()
@@ -22,7 +22,7 @@ delay(10).then(() => ac.abort())
 NodeJS specificities (coming from http/https builtins):
 ```js
 const fetchu = require('fetchu');
-await fetchu({ path: '/v1.37/containers/json', socketPath: '/var/run/docker.sock' }) // [ { Id: 'aa6...
+await fetchu({ path: '/v1.37/containers/json', socketPath: '/var/run/docker.sock' }).then(r => r.json()) // [ { Id: 'aa6...
 
 // abort:
 const signal = new EventEmitter()

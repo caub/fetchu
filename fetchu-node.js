@@ -8,17 +8,25 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		o.headers = { ...o.headers, 'content-type': o.headers && o.headers['content-type'] || 'application/json' };
 		body = JSON.stringify(body);
 	}
-
 	const req = (/^https:/.test(o && o.protocol || url) ? https : http).request(url, o);
 	req.once('error', reject);
 	req.once('response', async res => {
 		if (res.headers.location) return resolve(await fetchu(res.headers.location, o));
-		const bufs = [];
-		for await (const buf of res) bufs.push(buf);
-		const text = Buffer.concat(bufs);
-		const data = /^application\/json/.test(res.headers['content-type']) ? JSON.parse(text) : text + '';
-		if (res.statusCode < 300) return resolve(data);
-		reject(new Error(data && data.message || data || 'API error')); // data?.message || 'API error' with optional chaining
+		const getData = async () => {
+			const bufs = [];
+			for await (const buf of res) bufs.push(buf);
+			return Buffer.concat(bufs);
+		};
+		const r = {
+			ok: res.statusCode < 300,
+			body: res,
+			headers: { get(name) { return res.headers[name.toLowerCase()] } },
+			async text() { return (await getData()) + ''; },
+			async json() { return JSON.parse(await getData()); },
+		}
+		if (r.ok) return resolve(r);
+		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
+		reject(new Error(data && data.message || data || 'API error'));
 	});
 	if (o && o.signal) {
 		const abort = () => {
@@ -31,6 +39,7 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		if (o.signal.aborted) return abort();
 		o.signal[o.signal instanceof EventEmitter ? 'once' : 'addEventListener']('abort', abort, { once: true });
 	}
+	if (o && typeof o.withReq === 'function') o.withReq(req); // pass req object to withReq option, if any
 	if (body && typeof body.pipe === 'function') return body.pipe(req);
 	if (body) {
 		req.write(body);

@@ -1,6 +1,6 @@
 {
 	"name": "fetchu",
-	"version": "2.0.1",
+	"version": "3.0.0",
 	"description": "nodejs http-client",
 	"main": "fetchu-node.js",
 	"browser": "fetchu-browser.js",
@@ -22,6 +22,6 @@
 	"homepage": "https://github.com/caub/fetchu#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"puppeteer": "^1.9.0"
+		"puppeteer": "^1.11.0"
 	}
 }
