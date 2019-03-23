@@ -26,17 +26,14 @@ const puppeteer = require('puppeteer');
 		page.on('pageerror', err => console.error('pageerror', err));
 		await page.addScriptTag({
 			content: `import fetchu from 'https://caub.github.io/fetchu/fetchu-browser.js';
-		fetchu('https://cors-anywhere.herokuapp.com/http://example.com').then(r => r.json()).then(d => {
+		fetchu('https://cors-anywhere.herokuapp.com/http://example.com').then(r => r.text()).then(d => {
 			window.__shortHtml = d.slice(0, 30);
 		});
 		`,
 			type: 'module'
 		});
 		await page.waitForFunction('window.__shortHtml');
-		eq(await page.evaluate(() => __shortHtml), `<!doctype html>
-		<html>
-		<head>
-		`);
+		eq(await page.evaluate(() => __shortHtml), `<!doctype html>\n<html>\n<head>\n`);
 		console.log('ok');
 	} catch (e) {
 		console.error('ERR', e);

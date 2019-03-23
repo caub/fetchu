@@ -26,7 +26,7 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		}
 		if (r.ok) return resolve(r);
 		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
-		reject(new Error(data && data.message || data || 'API error'));
+		reject(new Error(typeof data === 'string' ? data : data && typeof data.message === 'string' ? data.message : JSON.stringify(data)));
 	});
 	if (o && o.signal) {
 		const abort = () => {
