@@ -1,5 +1,5 @@
 export default (url, o = {}) => {
-  if (typeof o.body === 'object') {
+  if (typeof o.body === 'object' && !(o.body instanceof Blob)) { // if we pass a plain object as body (and not a Blob), stringify and put the right content-type
     o.headers = { ...o.headers, 'content-type': o.headers && o.headers['content-type'] || 'application/json' };
     o.body = JSON.stringify(o.body);
   }

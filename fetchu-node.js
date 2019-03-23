@@ -4,7 +4,7 @@ const { EventEmitter } = require('events');
 
 const fetchu = (url, o) => new Promise((resolve, reject) => {
 	let body = o && o.body;
-	if (typeof body === 'object') {
+	if (typeof body === 'object' && typeof body.pipe !== 'function') { // if we pass a plain object as body (and not a stream), stringify and put the right content-type
 		o.headers = { ...o.headers, 'content-type': o.headers && o.headers['content-type'] || 'application/json' };
 		body = JSON.stringify(body);
 	}
@@ -39,7 +39,6 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		if (o.signal.aborted) return abort();
 		o.signal[o.signal instanceof EventEmitter ? 'once' : 'addEventListener']('abort', abort, { once: true });
 	}
-	if (o && typeof o.withReq === 'function') o.withReq(req); // pass req object to withReq option, if any
 	if (body && typeof body.pipe === 'function') return body.pipe(req);
 	if (body) {
 		req.write(body);
