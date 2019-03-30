@@ -2,16 +2,16 @@ const http = require('http');
 const https = require('https');
 const { EventEmitter } = require('events');
 
-const fetchu = (url, o) => new Promise((resolve, reject) => {
-	let body = o && o.body;
-	if (typeof body === 'object' && typeof body.pipe !== 'function') { // if we pass a plain object as body (and not a stream), stringify and put the right content-type
-		o.headers = { ...o.headers, 'content-type': o.headers && o.headers['content-type'] || 'application/json' };
+const fetchu = (url, { body: _body, signal, redirect, ...o }) => new Promise((resolve, reject) => {
+	let body = _body;
+	if (body && Object.getPrototypeOf(body) === Object.prototype) { // if we pass a plain object as body, stringify and put the right content-type
 		body = JSON.stringify(body);
+		o.headers = { ...o.headers, 'content-type': 'application/json' };
 	}
-	const req = (/^https:/.test(o && o.protocol || url) ? https : http).request(url, o);
+	const req = (/^https:/.test(o.protocol || url) ? https : http).request(url, o);
 	req.once('error', reject);
 	req.once('response', async res => {
-		if (res.headers.location) return resolve(await fetchu(res.headers.location, o));
+		if (res.headers.location && redirect !== 'manual') return resolve(await fetchu(res.headers.location, o));
 		const getData = async () => {
 			const bufs = [];
 			for await (const buf of res) bufs.push(buf);
@@ -28,7 +28,7 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
 		reject(new Error(typeof data === 'string' ? data : data && typeof data.message === 'string' ? data.message : JSON.stringify(data)));
 	});
-	if (o && o.signal) {
+	if (signal) {
 		const abort = () => {
 			req.abort();
 			const abortError = new Error('Aborted');
@@ -36,8 +36,8 @@ const fetchu = (url, o) => new Promise((resolve, reject) => {
 			reject(abortError);
 		}
 
-		if (o.signal.aborted) return abort();
-		o.signal[o.signal instanceof EventEmitter ? 'once' : 'addEventListener']('abort', abort, { once: true });
+		if (signal.aborted) return abort();
+		signal[signal instanceof EventEmitter ? 'once' : 'addEventListener']('abort', abort, { once: true });
 	}
 	if (body && typeof body.pipe === 'function') return body.pipe(req);
 	if (body) {

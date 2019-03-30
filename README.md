@@ -3,8 +3,8 @@
 [![npm version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 
-- fetchu-node.js: for NodeJS
-- fetchu-browser.js: it relies on a global fetch, so it works on browsers
+- fetchu-node.js: using `http`/`https` modules for NodeJS, light drop-in replacement for `node-fetch`
+- fetchu-browser.js: it wraps `window.fetch`
 
 ```js
 import fetchu from 'https://unpkg.com/fetchu';
@@ -25,7 +25,12 @@ const fetchu = require('fetchu');
 await fetchu({ path: '/v1.37/containers/json', socketPath: '/var/run/docker.sock' }).then(r => r.json()) // [ { Id: 'aa6...
 
 // abort:
-const signal = new EventEmitter()
+require('abortcontroller-polyfill/dist/abortcontroller-polyfill-only');
+const ac = new AbortController()
+fetchu('https://httpbin.org/get?test=foo', { signal: ac.signal }).then(console.log, console.error)
+delay(10).then(() => ac.abort());
+// or 
+const signal = new EventEmitter(); // node.js native events.EventEmitter
 fetchu('https://httpbin.org/get?test=foo', { signal }).then(console.log, console.error)
 delay(10).then(() => signal.emit('abort'))
 ```
