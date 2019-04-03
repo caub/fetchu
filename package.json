@@ -1,6 +1,6 @@
 {
 	"name": "fetchu",
-	"version": "3.2.1",
+	"version": "4.0.0",
 	"description": "nodejs http-client",
 	"main": "fetchu-node.js",
 	"browser": "fetchu-browser.js",
@@ -23,6 +23,7 @@
 	"dependencies": {},
 	"devDependencies": {
 		"abortcontroller-polyfill": "^1.3.0",
+		"nock": "github:caub/nock#node10",
 		"puppeteer": "^1.11.0"
 	}
 }

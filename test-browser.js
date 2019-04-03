@@ -1,4 +1,4 @@
-const { deepEqual: eq } = require('assert');
+const { deepEqual: equal } = require('assert');
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 
@@ -20,7 +20,7 @@ const puppeteer = require('puppeteer');
 			body: { lol: 1 }
 		}).then(r => r.json())
 		`);
-        eq(r2.data, '{"lol":1}');
+        equal(r2.data, '{"lol":1}');
         console.log('ok');
     } catch (e) {
         console.error('ERR', e);

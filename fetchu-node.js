@@ -2,23 +2,24 @@ const http = require('http');
 const https = require('https');
 const { EventEmitter } = require('events');
 
-const fetchu = (url, { body: _body, signal, redirect, ...o }) => new Promise((resolve, reject) => {
-	let body = _body;
-	if (body && Object.getPrototypeOf(body) === Object.prototype) { // if we pass a plain object as body, stringify and put the right content-type
+const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } = {}) => new Promise((resolve, reject) => {
+	let body = _body, headers = _headers;
+	if (body && (Object.getPrototypeOf(body) === Object.prototype || Object.getPrototypeOf(body) === null)) { // if we pass a plain object as body, stringify and put the right content-type
 		body = JSON.stringify(body);
-		o.headers = { ...o.headers, 'content-type': 'application/json' };
+		headers = { ...headers, 'content-type': 'application/json' };
 	}
-	const req = (/^https:/.test(o.protocol || url) ? https : http).request(url, o);
+	const req = (/^https:/.test(o.protocol || url) ? https : http).request(url, { ...o, headers });
 	req.once('error', reject);
 	req.once('response', async res => {
-		if (res.headers.location && redirect !== 'manual') return resolve(await fetchu(res.headers.location, o));
+		if (res.headers.location && redirect !== 'manual') return resolve(await fetchu(res.headers.location, { ...o, headers, body, signal, redirect }));
 		const getData = async () => {
 			const bufs = [];
 			for await (const buf of res) bufs.push(buf);
 			return Buffer.concat(bufs);
 		};
 		const r = {
-			ok: res.statusCode < 300,
+			status: res.statusCode,
+			ok: res.statusCode < 400,
 			body: res,
 			headers: { get(name) { return res.headers[name.toLowerCase()] } },
 			async text() { return (await getData()) + ''; },
