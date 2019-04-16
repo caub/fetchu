@@ -1,11 +1,11 @@
 {
 	"name": "fetchu",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "nodejs http-client",
 	"main": "fetchu-node.js",
 	"browser": "fetchu-browser.js",
 	"scripts": {
-		"test": "node test-node && node test-browser"
+		"test": "for f in *.test.js; do node $f; done"
 	},
 	"repository": "https://github.com/caub/fetchu.git",
 	"keywords": [

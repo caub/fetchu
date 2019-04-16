@@ -12,18 +12,17 @@ const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } 
 	req.once('error', reject);
 	req.once('response', async res => {
 		if (res.headers.location && redirect !== 'manual') return resolve(await fetchu(res.headers.location, { ...o, headers, body, signal, redirect }));
-		const getData = async () => {
-			const bufs = [];
-			for await (const buf of res) bufs.push(buf);
-			return Buffer.concat(bufs);
-		};
 		const r = {
 			status: res.statusCode,
 			ok: res.statusCode < 400,
 			body: res,
 			headers: { get(name) { return res.headers[name.toLowerCase()] } },
-			async text() { return (await getData()) + ''; },
-			async json() { return JSON.parse(await getData()); },
+			async text() {
+				const bufs = [];
+				for await (const buf of res) bufs.push(buf);
+				return Buffer.concat(bufs) + '';
+			},
+			async json() { return JSON.parse(await r.text()); },
 		}
 		if (r.ok) return resolve(r);
 		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
