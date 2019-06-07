@@ -16,13 +16,14 @@ const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } 
 			status: res.statusCode,
 			ok: res.statusCode < 400,
 			body: res,
-			headers: { get(name) { return res.headers[name.toLowerCase()] } },
-			async text() {
+			headers: { get(name) { return res.headers[name.toLowerCase()]; } },
+			async buffer() {
 				const bufs = [];
 				for await (const buf of res) bufs.push(buf);
-				return Buffer.concat(bufs) + '';
+				return Buffer.concat(bufs);
 			},
-			async json() { return JSON.parse(await r.text()); },
+			async text() { return await r.buffer() + ''; },
+			async json() { return JSON.parse(await r.buffer()); },
 		}
 		if (r.ok) return resolve(r);
 		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
