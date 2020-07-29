@@ -11,7 +11,14 @@ const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } 
 	const req = (/^https:/.test(o.protocol || url) ? https : http).request(url, { ...o, headers });
 	req.once('error', reject);
 	req.once('response', async res => {
-		if (res.headers.location && redirect !== 'manual') return resolve(await fetchu(res.headers.location, { ...o, headers, body, signal, redirect }));
+		if (res.headers.location && redirect !== 'manual') {
+			try {
+				resolve(await fetchu(res.headers.location, { ...o, headers, body, signal, redirect }));
+			} catch(error) {
+				reject(error)
+			}
+			return;
+		}
 		const r = {
 			status: res.statusCode,
 			ok: res.statusCode < 400,
