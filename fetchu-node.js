@@ -14,7 +14,7 @@ const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } 
 		if (res.headers.location && redirect !== 'manual') {
 			try {
 				resolve(await fetchu(res.headers.location, { ...o, headers, body, signal, redirect }));
-			} catch(error) {
+			} catch (error) {
 				reject(error)
 			}
 			return;
@@ -33,8 +33,15 @@ const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } 
 			async json() { return JSON.parse(await r.buffer()); },
 		}
 		if (r.ok) return resolve(r);
-		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
-		reject(new Error(typeof data === 'string' ? data : data && typeof data.message === 'string' ? data.message : JSON.stringify(data)));
+
+		const text = await r.text();
+		let parsed;
+		try {
+			parsed = JSON.parse(text);
+		} catch { }
+		const err = new Error(parsed && parsed.message || parsed && parsed.error || text);
+		err.status = r.status;
+		reject(err);
 	});
 	if (signal) {
 		const abort = () => {

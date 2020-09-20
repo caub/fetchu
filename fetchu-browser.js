@@ -9,8 +9,15 @@ const fetchu = (url, { body, headers, ...o } = {}) => {
 		...o
 	}).then(async r => {
 		if (r.ok) return r;
-		const data = await (/^application\/json/.test(r.headers.get('content-type')) ? r.json() : r.text());
-		throw new Error(typeof data === 'string' ? data : data && typeof data.message === 'string' ? data.message : JSON.stringify(data));
+
+		const text = await r.text();
+		let parsed;
+		try {
+			parsed = JSON.parse(text);
+		} catch { }
+		const err = new Error(parsed && parsed.message || parsed && parsed.error || text);
+		err.status = r.status;
+		throw err;
 	});
 };
 

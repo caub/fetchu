@@ -1,4 +1,4 @@
-const { deepEqual: equal } = require('assert');
+const same = require('assert').deepStrictEqual;
 const fetchu = require('./fetchu-node.js');
 const nock = require('nock');
 const delay = require('util').promisify(setTimeout);
@@ -7,7 +7,7 @@ require('abortcontroller-polyfill/dist/abortcontroller-polyfill-only');
 (async () => {
 	try {
 		const r = await fetchu('http://httpbin.org/post', { method: 'POST', body: { ok: 3 } }).then(r => r.json());
-		equal(JSON.parse(r.data), { ok: 3 });
+		same(JSON.parse(r.data), { ok: 3 });
 		try {
 			// wrong method
 			await fetchu('http://httpbin.org/post', { method: 'PUT', body: { ok: 3 } }).then(r => r.json());
@@ -35,12 +35,12 @@ require('abortcontroller-polyfill/dist/abortcontroller-polyfill-only');
 			.reply(200, { ok: 1 });
 
 		const r2 = await fetchu('https://x.y/a', { redirect: 'manual' });
-		equal(r2.status, 307);
-		equal(r2.headers.get('location'), 'https://x.y/b');
+		same(r2.status, 307);
+		same(r2.headers.get('location'), 'https://x.y/b');
 
 		const r3 = await fetchu('https://x.y/a');
-		equal(r3.status, 200);
-		equal(await r3.json(), { ok: 1 });
+		same(r3.status, 200);
+		same(await r3.json(), { ok: 1 });
 
 		console.log('ok');
 	} catch (e) {
