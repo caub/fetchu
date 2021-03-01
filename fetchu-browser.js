@@ -17,6 +17,7 @@ const fetchu = (url, { body, headers, ...o } = {}) => {
 		} catch { }
 		const err = new Error(parsed && parsed.message || parsed && parsed.error || text);
 		err.status = r.status;
+		err.errors = parsed && parsed.errors;
 		throw err;
 	});
 };

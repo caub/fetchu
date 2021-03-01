@@ -3,6 +3,11 @@
 [![npm version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 
+### Differences with fetch:
+- automatically handle json body (`JSON.stringify` a body that is an objet literal, and add the right header)
+- throws on http error status
+
+### Files:
 - fetchu-node.js: using `http`/`https` modules for NodeJS, light drop-in replacement for `node-fetch`
 - fetchu-browser.js: it wraps `window.fetch`
 

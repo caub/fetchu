@@ -41,6 +41,7 @@ const fetchu = (url, { body: _body, headers: _headers, signal, redirect, ...o } 
 		} catch { }
 		const err = new Error(parsed && parsed.message || parsed && parsed.error || text);
 		err.status = r.status;
+		err.errors = parsed && parsed.errors;
 		reject(err);
 	});
 	if (signal) {
